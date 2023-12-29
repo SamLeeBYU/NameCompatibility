@@ -1,11 +1,8 @@
-math
 pandas
 json
-os
 numpy
 matplotlib
 streamlit
-random
 plotly
 bs4
 requests
