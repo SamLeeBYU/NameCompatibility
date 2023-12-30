@@ -640,6 +640,10 @@ def display_distribution_info(name, sex="male"):
     with col2:
         st.table(이름궁합.tail(l).sort_values(by="이름 궁합", ascending=True))
 
+st.markdown("# The Name Compatibility Test (이름궁합 테스트): A Distributional Analysis using Historically Popular Korean Names")
+
+st.markdown("#### By Sam Lee")
+
 st.markdown("## Introduction")
 
 st.markdown('''
