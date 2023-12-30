@@ -366,109 +366,127 @@ if not os.path.exists("Data/hierarchies.json"):
             row_i.append(compare(i,j,sex="female"))
         female_probability_matrix.append(row_i)
 
-    initial_allocation = list(range(0, len(male_aliases)))
-    random.shuffle(initial_allocation)
-    allocation = [(initial_allocation[i], initial_allocation[i + 1]) if i + 1 < len(initial_allocation) else (initial_allocation[i],) for i in range(0, len(initial_allocation), 2)]
+    iterations = 10
 
-    hierarchy = {
-        0: allocation
-    }
+    hierarchies = {"iterations": []}
 
-    def is_equilibrium():
-        equilibrium = True
-        for level in list(hierarchy.keys()):
-            decomposition = [n for pair in hierarchy[level] for n in pair]
-            if len(decomposition) != 1:
-                equilibrium = False
-                break
-        return equilibrium
+    for iteration in range(iterations):
 
-    while not is_equilibrium():
-        for level in list(hierarchy.keys()):
-            if not level+1 in hierarchy:
-                hierarchy[level+1] = []
-            if not level-1 in hierarchy:
-                hierarchy[level-1] = []
-            keep_ns = []
-            for n in range(len(hierarchy[level])):
-                pair = hierarchy[level][n]
-                try:
-                    i = pair[0]
-                    j = pair[1]
-                    if male_probability_matrix[i][j] > 0.5:
-                        hierarchy[level+1].append(i)
-                        hierarchy[level-1].append(j)
-                    else:
-                        hierarchy[level+1].append(j)
-                        hierarchy[level-1].append(i)
-                    
-                except Exception as e:
+        initial_allocation = list(range(0, len(male_aliases)))
+        random.shuffle(initial_allocation)
+        allocation = [(initial_allocation[i], initial_allocation[i + 1]) if i + 1 < len(initial_allocation) else (initial_allocation[i],) for i in range(0, len(initial_allocation), 2)]
+
+        hierarchy = {
+            0: allocation
+        }
+
+        def is_equilibrium():
+            equilibrium = True
+            for level in list(hierarchy.keys()):
+                decomposition = [n for pair in hierarchy[level] for n in pair]
+                if len(decomposition) != 1:
+                    equilibrium = False
+                    break
+            return equilibrium
+
+        while not is_equilibrium():
+            for level in list(hierarchy.keys()):
+                if not level+1 in hierarchy:
+                    hierarchy[level+1] = []
+                if not level-1 in hierarchy:
+                    hierarchy[level-1] = []
+                keep_ns = []
+                for n in range(len(hierarchy[level])):
+                    pair = hierarchy[level][n]
                     try:
-                        keep_ns.append(pair[0])
+                        i = pair[0]
+                        j = pair[1]
+                        if male_probability_matrix[i][j] > 0.5:
+                            hierarchy[level+1].append(i)
+                            hierarchy[level-1].append(j)
+                        else:
+                            hierarchy[level+1].append(j)
+                            hierarchy[level-1].append(i)
+                        
                     except Exception as e:
-                        keep_ns.append(pair)
-            hierarchy[level] = keep_ns
-        for level in list(hierarchy.keys()):
-            if len(hierarchy[level]) <= 0:
-                hierarchy.pop(level)
-            else:
-                hierarchy[level] = [(hierarchy[level][x], hierarchy[level][x + 1]) if x + 1 < len(hierarchy[level]) else (hierarchy[level][x],) for x in range(0, len(hierarchy[level]), 2)]
+                        try:
+                            keep_ns.append(pair[0])
+                        except Exception as e:
+                            keep_ns.append(pair)
+                hierarchy[level] = keep_ns
+            for level in list(hierarchy.keys()):
+                if len(hierarchy[level]) <= 0:
+                    hierarchy.pop(level)
+                else:
+                    hierarchy[level] = [(hierarchy[level][x], hierarchy[level][x + 1]) if x + 1 < len(hierarchy[level]) else (hierarchy[level][x],) for x in range(0, len(hierarchy[level]), 2)]
 
-    initial_allocation = list(range(0, len(female_aliases)))
-    random.shuffle(initial_allocation)
-    allocation = [(initial_allocation[i], initial_allocation[i + 1]) if i + 1 < len(initial_allocation) else (initial_allocation[i],) for i in range(0, len(initial_allocation), 2)]
+        hierarchies["iterations"].append(hierarchy)
 
-    female_hierarchy = {
-        0: allocation
-    }
+        initial_allocation = list(range(0, len(female_aliases)))
+        random.shuffle(initial_allocation)
+        allocation = [(initial_allocation[i], initial_allocation[i + 1]) if i + 1 < len(initial_allocation) else (initial_allocation[i],) for i in range(0, len(initial_allocation), 2)]
 
-    def is_equilibrium():
-        equilibrium = True
-        for level in list(female_hierarchy.keys()):
-            decomposition = [n for pair in female_hierarchy[level] for n in pair]
-            if len(decomposition) != 1:
-                equilibrium = False
-                break
-        return equilibrium
+    female_hierarchies = {"iterations": []}
 
-    # print(allocation)
+    for iteration in range(iterations):
 
-    while not is_equilibrium():
-        for level in list(female_hierarchy.keys()):
-            if not level+1 in female_hierarchy:
-                female_hierarchy[level+1] = []
-            if not level-1 in female_hierarchy:
-                female_hierarchy[level-1] = []
-            keep_ns = []
-            for n in range(len(female_hierarchy[level])):
-                pair = female_hierarchy[level][n]
-                try:
-                    i = pair[0]
-                    j = pair[1]
-                    if female_probability_matrix[i][j] > 0.5:
-                        female_hierarchy[level+1].append(i)
-                        female_hierarchy[level-1].append(j)
-                    else:
-                        female_hierarchy[level+1].append(j)
-                        female_hierarchy[level-1].append(i)
-                    
-                except Exception as e:
+        initial_allocation = list(range(0, len(female_aliases)))
+        random.shuffle(initial_allocation)
+        allocation = [(initial_allocation[i], initial_allocation[i + 1]) if i + 1 < len(initial_allocation) else (initial_allocation[i],) for i in range(0, len(initial_allocation), 2)]
+
+        female_hierarchy = {
+            0: allocation
+        }
+
+        def is_equilibrium():
+            equilibrium = True
+            for level in list(female_hierarchy.keys()):
+                decomposition = [n for pair in female_hierarchy[level] for n in pair]
+                if len(decomposition) != 1:
+                    equilibrium = False
+                    break
+            return equilibrium
+
+        # print(allocation)
+
+        while not is_equilibrium():
+            for level in list(female_hierarchy.keys()):
+                if not level+1 in female_hierarchy:
+                    female_hierarchy[level+1] = []
+                if not level-1 in female_hierarchy:
+                    female_hierarchy[level-1] = []
+                keep_ns = []
+                for n in range(len(female_hierarchy[level])):
+                    pair = female_hierarchy[level][n]
                     try:
-                        keep_ns.append(pair[0])
+                        i = pair[0]
+                        j = pair[1]
+                        if female_probability_matrix[i][j] > 0.5:
+                            female_hierarchy[level+1].append(i)
+                            female_hierarchy[level-1].append(j)
+                        else:
+                            female_hierarchy[level+1].append(j)
+                            female_hierarchy[level-1].append(i)
+                        
                     except Exception as e:
-                        keep_ns.append(pair)
-            female_hierarchy[level] = keep_ns
-        for level in list(female_hierarchy.keys()):
-            if len(female_hierarchy[level]) <= 0:
-                female_hierarchy.pop(level)
-            else:
-                female_hierarchy[level] = [(female_hierarchy[level][x], female_hierarchy[level][x + 1]) if x + 1 < len(female_hierarchy[level]) else (female_hierarchy[level][x],) for x in range(0, len(female_hierarchy[level]), 2)]
+                        try:
+                            keep_ns.append(pair[0])
+                        except Exception as e:
+                            keep_ns.append(pair)
+                female_hierarchy[level] = keep_ns
+            for level in list(female_hierarchy.keys()):
+                if len(female_hierarchy[level]) <= 0:
+                    female_hierarchy.pop(level)
+                else:
+                    female_hierarchy[level] = [(female_hierarchy[level][x], female_hierarchy[level][x + 1]) if x + 1 < len(female_hierarchy[level]) else (female_hierarchy[level][x],) for x in range(0, len(female_hierarchy[level]), 2)]
+
+        female_hierarchies["iterations"].append(female_hierarchy)
 
     with open('Data/hierarchies.json', 'w') as json_file:
 
         data = {
-            "male_hierarchy": hierarchy,
-            "female_hierarchy": female_hierarchy
+            "male_hierarchies": hierarchies,
+            "female_hierarchies": female_hierarchies
         }
 
         json.dump(data, json_file)
@@ -478,17 +496,50 @@ else:
     with open('Data/hierarchies.json', 'r') as json_file:
         data = json.load(json_file)
 
-        hierarchy = data["male_hierarchy"]
-        female_hierarchy = data["female_hierarchy"]
+        hierarchies = data["male_hierarchies"]
+        female_hierarchies = data["female_hierarchies"]
+
+    hierarchy = {}
+    for iteration in range(len(hierarchies["iterations"])):
+        for rank in list(hierarchies["iterations"][iteration].keys()):
+            x = hierarchies["iterations"][iteration][rank][0][0]
+            if not x in hierarchy:
+                hierarchy[x] = [int(rank)]
+            else:
+                hierarchy[x].append(int(rank))
+    for index in list(hierarchy.keys()):
+        hierarchy[index].append(np.mean(hierarchy[index]))
+
+    hierarchy_sorted = dict(sorted(hierarchy.items(), key=lambda rank: rank[1][-1]))
+    hierarchy = pd.DataFrame()
+    hierarchy["Index"] = list(hierarchy_sorted.keys())
+    hierarchy["Rank"] = list(range(len(hierarchy_sorted.keys()), 0, -1))
+    hierarchy["Alias"] = hierarchy["Index"].apply(lambda i: list(male_aliases.keys())[i])
+
+    female_hierarchy = {}
+    for iteration in range(len(female_hierarchies["iterations"])):
+        for rank in list(female_hierarchies["iterations"][iteration].keys()):
+            x = female_hierarchies["iterations"][iteration][rank][0][0]
+            if not x in female_hierarchy:
+                female_hierarchy[x] = [int(rank)]
+            else:
+                female_hierarchy[x].append(int(rank))
+    for index in list(female_hierarchy.keys()):
+        female_hierarchy[index].append(np.mean(female_hierarchy[index]))
+
+    female_hierarchy_sorted = dict(sorted(female_hierarchy.items(), key=lambda rank: rank[1][-1]))
+    female_hierarchy = pd.DataFrame()
+    female_hierarchy["Index"] = list(female_hierarchy_sorted.keys())
+    female_hierarchy["Rank"] = list(range(len(female_hierarchy_sorted.keys()), 0, -1))
+    female_hierarchy["Alias"] = female_hierarchy["Index"].apply(lambda i: list(female_aliases.keys())[i])
+
 
 
 def get_column(matrix, i):
     return [row[i] for row in matrix]
-
-def get_percentile(d, sex="male"):
     if sex == "male":
 
-        indices = [int(x) for x in list(hierarchy.keys())]
+        indices = list(hierarchy["Rank"])
         indices.sort()
 
         local_max = len(indices)
@@ -497,7 +548,8 @@ def get_percentile(d, sex="male"):
         subset = indices[local_min:local_max]
 
         while len(subset) > 1:
-            i = subset[math.floor(len(subset)/2)]
+            r = subset[math.floor(len(subset)/2)]
+            i = list(hierarchy[hierarchy["Rank"] == r]["Index"])[0]
             x = np.mean(np.array(d) > np.array(distributions[i]))
             if x > 0.5:
                 local_min = local_min+math.floor((local_max-local_min)/2)
@@ -507,15 +559,16 @@ def get_percentile(d, sex="male"):
             subset = indices[local_min:local_max]
 
         weighted_indices = []
-        for index in indices:
-            for n in range(len(list(male_aliases.keys())[index])):
-                weighted_indices.append(index)
+        for rank in indices:
+            i = list(hierarchy[hierarchy["Rank"] == rank]["Index"])[0]
+            for n in range(len(list(male_aliases.keys())[i])):
+                weighted_indices.append(rank)
 
         return np.mean(np.array(weighted_indices) < subset[0]-1)
     
     else:
 
-        indices = [int(x) for x in list(female_hierarchy.keys())]
+        indices = list(female_hierarchy["Rank"]) #[int(x) for x in list(female_hierarchy.keys())]
         indices.sort()
 
         local_max = len(indices)
@@ -524,7 +577,8 @@ def get_percentile(d, sex="male"):
         subset = indices[local_min:local_max]
 
         while len(subset) > 1:
-            i = subset[math.floor(len(subset)/2)]
+            r = subset[math.floor(len(subset)/2)]
+            i = list(female_hierarchy[female_hierarchy["Rank"] == r]["Index"])[0]
             female_distribution = get_column(distributions, i)
             x = np.mean(np.array(d) > np.array(female_distribution))
             if x > 0.5:
@@ -535,9 +589,10 @@ def get_percentile(d, sex="male"):
             subset = indices[local_min:local_max]
 
         weighted_indices = []
-        for index in indices:
-            for n in range(len(list(female_aliases.keys())[index])):
-                weighted_indices.append(index)
+        for rank in indices:
+            i = list(female_hierarchy[female_hierarchy["Rank"] == rank]["Index"])[0]
+            for n in range(len(list(female_aliases.keys())[i])):
+                weighted_indices.append(rank)
 
         return np.mean(np.array(weighted_indices) < subset[0]-1)
     
@@ -568,8 +623,6 @@ def display_distribution_info(name, sex="male"):
     이름궁합["이름 궁합"] = distribution
     이름궁합 = 이름궁합.sort_values(by='이름 궁합', ascending=False).reset_index(drop=True)
 
-    st.write(f"{name} falls into the {get_percentile(distribution, sex=sex)*100:.2f}th percentile of 이름 궁합 distributions")
-
     st.markdown("**Most and least compatible aliases:**")
     m = 5
     if sex == "male":
@@ -587,13 +640,17 @@ def display_distribution_info(name, sex="male"):
     with col2:
         st.table(이름궁합.tail(l).sort_values(by="이름 궁합", ascending=True))
 
-st.markdown("## 이름궁합 - Introduction")
+st.markdown("## Introduction")
 
 st.markdown('''
-
+The popular Korean game called "The Name Compatibility Test" (이름궁합 테스트) is a game which takes two (Korean) names and returns a compatibility score 0-100, representing a percentage. I was curious to see if some names were naturally more "compatible" than others. To investigate this I created this research project. I wanted to figure out if I could come up with a method to identify which names are more compatible than others.
 ''')
 
-st.markdown("## The 이름궁합 게임")
+st.markdown('''
+Please refer to this project's [blog post](https://samleebyu.github.io/2023/12/29/이름궁합/) to learn more about this project's statistical details. All code is on this project's [Github repository](https://github.com/SamLeeBYU/NameCompatibility)
+''')
+
+st.markdown("## The 이름궁합 테스트")
 
 col_name1, col_name2 = st.columns(2)
 
@@ -624,38 +681,41 @@ if calc:
 
 st.markdown("## Distributional Relationships")
 
+st.write("To find out which names yield statistically better scores, on average, than other names, I created an algorithm that structures a hierarchy of ranks based on how well each distribution of compatibility scores compare against each other. Here are the results of the algorithm:")
+
 st.write("Aliases that have statistically better distributions than all other aliases*")
 
 n = st.slider("\# of Displayed Rows", min_value=5, max_value=max(len(male_aliases), len(female_aliases)), key="n")
 
-def top_distribution(h, n=5, sex="male"):
-    indices = [int(x) for x in list(h.keys())]
-    indices.sort()
-    indices = indices[::-1]
+# def top_distribution(h, n=5, sex="male"):
+#     indices = [int(x) for x in list(h.keys())]
+#     indices.sort()
+#     indices = indices[::-1]
 
-    data = {"Rank": [], "Alias": []}
-    for i in range(n):
-        try:
-            if sex == "male":
-                data["Alias"].append(list(male_aliases.keys())[h[str(indices[i])][0][0]])
-            else:
-                data["Alias"].append(list(female_aliases.keys())[h[str(indices[i])][0][0]])
-            data["Rank"].append(i+1)
-        except Exception as e:
-            break;
+#     data = {"Rank": [], "Alias": []}
+#     for i in range(n):
+#         try:
+#             if sex == "male":
+#                 data["Alias"].append(list(male_aliases.keys())[h[str(indices[i])][0][0]])
+#             else:
+#                 data["Alias"].append(list(female_aliases.keys())[h[str(indices[i])][0][0]])
+#             data["Rank"].append(i+1)
+#         except Exception as e:
+#             break;
 
-    return pd.DataFrame(data)
+#     return pd.DataFrame(data)
 
 col_top_male, col_top_female = st.columns(2)
 
 with col_top_male:
     st.write("Top Male Aliases")
-    st.table(top_distribution(hierarchy, n=n))
+    st.table(hierarchy.sort_values(by="Rank").reset_index(drop=True)[["Rank", "Alias"]].head(n))
 with col_top_female:
     st.write("Top Female Aliases")
-    st.table(top_distribution(female_hierarchy, n=n, sex="female"))
+    st.table(female_hierarchy.sort_values(by="Rank").reset_index(drop=True)[["Rank", "Alias"]].head(n))
 
-st.markdown("**Computed from the limited sample of all popular names since 1940 and combinations with surnames*")
+
+st.write("View a compatibility score distribution for any given name. This is computed based on a sample of 34,720 male/female popular Korean names.")
 
 col_sex, col_name = st.columns(2)
 
@@ -669,7 +729,12 @@ if len(name_query) > 0:
     display_distribution_info(name_query, sex=name_sex.lower())
 
 
+st.markdown("**Computed from the limited sample of all popular names since 1940 and combinations with surnames*")
+
+
 st.markdown("## Aliases")
+
+st.write("In order to reduce computation time and improve efficiency and organization, instead of running computations on each individual name, aliases were created based off unique stroke distributions. Hence, names with the same stroke distribution fall under the same alias and will thus have the same compatibility score distribution as all other names that use the same alias.")
 
 def search_alias(x):
     if len(x) > 0:
@@ -709,4 +774,9 @@ alias_table = pd.DataFrame(alias_table, columns=["이름"])
 
 st.table(alias_table)
 
+st.markdown("---")
+
 st.markdown("## Data Sources")
+
+st.markdown("1) A compilation of popular names in Korea dating back to 1940 was obtained through Wikipedia: [(https://en.wikipedia.org/wiki/List_of_the_most_popular_given_names_in_South_Korea#cite_note-KukminIlbo20193-2)]((https://en.wikipedia.org/wiki/List_of_the_most_popular_given_names_in_South_Korea#cite_note-KukminIlbo20193-2))")
+st.markdown("2) A compilation of possible Korean surnames was obtained through Wikipedia: [https://en.wikipedia.org/wiki/List_of_Korean_surnames](https://en.wikipedia.org/wiki/List_of_Korean_surnames)")
