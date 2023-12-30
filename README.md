@@ -1,3 +1,4 @@
+---
 author: Sam Lee
 date: 12/29/2023
 language: python
@@ -23,7 +24,7 @@ This project's dashboard can be found at [https://namecompatibility.streamlit.ap
 
 1) [**popular_names.csv**](Data/popular_names.csv) - This is obtained from data source [1]. This contains all popular Korean names dating back to 1940, segregated by sex.
 
-2) [**surnames.csv**][Data/surnames.csv] - This is obtained from data source [2]. This contains a vector of possible Korean surnames. Together with **popular_names.csv**, a total of 34,720 male and 34,720 female names were created.
+2) [**surnames.csv**](Data/surnames.csv) - This is obtained from data source [2]. This contains a vector of possible Korean surnames. Together with **popular_names.csv**, a total of 34,720 male and 34,720 female names were created.
 
 3) [**stroke_distributions.json**](Data/stroke_distributions.json) - This json file is output from the python scripts above. This contains the stroke distributions (the \# of strokes per syllable) for each male and female name.
 
