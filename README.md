@@ -38,7 +38,7 @@ This project's dashboard can be found at [https://namecompatibility.streamlit.ap
 
 ## Data Sources
 
-1) A compilation of popular names in Korea dating back to 1940 was obtained through Wikipedia: [(https://en.wikipedia.org/wiki/List_of_the_most_popular_given_names_in_South_Korea#cite_note-KukminIlbo20193-2)]((https://en.wikipedia.org/wiki/List_of_the_most_popular_given_names_in_South_Korea#cite_note-KukminIlbo20193-2))
+1) A compilation of popular names in Korea dating back to 1940 was obtained through Wikipedia: [(https://en.wikipedia.org/wiki/List_of_the_most_popular_given_names_in_South_Korea#cite_note-KukminIlbo20193-2)](https://en.wikipedia.org/wiki/List_of_the_most_popular_given_names_in_South_Korea#cite_note-KukminIlbo20193-2)
 
 2) A compilation of possible Korean surnames was obtained through Wikipedia: [https://en.wikipedia.org/wiki/List_of_Korean_surnames](https://en.wikipedia.org/wiki/List_of_Korean_surnames)
 
